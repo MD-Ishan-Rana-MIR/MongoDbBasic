@@ -136,7 +136,7 @@ async function run() {
         });
 
 
-        // update 
+        // update one
 
 
         app.put('/post-update/:id', async (req, res) => {
@@ -152,7 +152,7 @@ async function run() {
                     role: req.body.role,
                     status: req.body.status
                 };
-                const data = await userCollection.updateOne(filter, {$set : update}, { upsert: true });
+                const data = await userCollection.updateOne(filter, { $set: update }, { upsert: true });
 
 
                 return res.status(200).json({
@@ -169,8 +169,87 @@ async function run() {
                 });
 
             }
-        })
+        });
 
+
+        // update many 
+
+
+        app.put('/update-many', async (req, res) => {
+            try {
+                const reqBody = req.body;
+                const update = {
+                    ...req.body
+                };
+                const filter = {
+                    age: {
+                        $gte: 26
+                    }
+                };
+                const data = await userCollection.updateMany(filter, { $set: update }, { upsert: true });
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data update successully',
+                    data: data
+                });
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+
+        // delete one 
+
+        app.delete('/delete-one/:id', async (req, res) => {
+            try {
+                let { id } = req.params;
+                const filter = {
+                    _id: new ObjectId(id)
+                };
+                const data = await userCollection.deleteOne(filter);
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetch successully',
+                    data: data
+                });
+
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+
+            }
+        });
+
+
+        app.delete('/delete-many', async (req, res) => {
+            const status = req.body.status;
+            try {
+                let filter = {
+                    status : status
+                };
+                const data = await userCollection.deleteMany(filter);
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetch successully',
+                    data: data
+                });
+
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+
+            }
+        })
 
 
 
