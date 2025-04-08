@@ -10,7 +10,7 @@ app.use(express.json());
 
 
 
-const { MongoClient, ServerApiVersion, CURSOR_FLAGS } = require('mongodb');
+const { MongoClient, ServerApiVersion, CURSOR_FLAGS, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://ishanrana950:Xi9Qot1VD3BjGk31@cluster0.5xmvgk6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -116,8 +116,8 @@ async function run() {
                     {
                         projection: {
                             name: 1,
-                            role : 1,
-                            age : 1
+                            role: 1,
+                            age: 1
                         }
                     }
                 ).limit(5).toArray();
@@ -132,6 +132,42 @@ async function run() {
                     status: 'fail',
                     msg: 'Something went wrong'
                 });
+            }
+        });
+
+
+        // update 
+
+
+        app.put('/post-update/:id', async (req, res) => {
+            try {
+                let id = req.params.id;
+                const filter = {
+                    _id: new ObjectId(id)
+                };
+                const update = {
+                    name: req.body.name,
+                    email: req.body.email,
+                    age: req.body.age,
+                    role: req.body.role,
+                    status: req.body.status
+                };
+                const data = await userCollection.updateOne(filter, {$set : update}, { upsert: true });
+
+
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetch successully',
+                    data: data
+                });
+
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+
             }
         })
 
