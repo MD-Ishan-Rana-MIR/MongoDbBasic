@@ -82,11 +82,11 @@ async function run() {
                     age: {
                         $gt: 30
                     },
-                    status : {
-                        $eq : 'active'
+                    status: {
+                        $eq: 'active'
                     },
-                    role : {
-                        $eq : 'Product Manager'
+                    role: {
+                        $eq: 'Product Manager'
                     }
                 }).toArray();
                 return res.status(200).json({
@@ -102,6 +102,38 @@ async function run() {
                 })
             }
         });
+
+
+        // find with projection 
+
+
+        app.get('/fint-projection', async (req, res) => {
+            try {
+                const data = await userCollection.find(
+                    {
+                        age: { $gte: 20 }  // Find documents where age is greater than or equal to 20
+                    },
+                    {
+                        projection: {
+                            name: 1,
+                            role : 1,
+                            age : 1
+                        }
+                    }
+                ).limit(5).toArray();
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetch successully',
+                    data: data
+                });
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        })
 
 
 
