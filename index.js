@@ -232,7 +232,7 @@ async function run() {
             const status = req.body.status;
             try {
                 let filter = {
-                    status : status
+                    status: status
                 };
                 const data = await userCollection.deleteMany(filter);
                 return res.status(200).json({
@@ -247,9 +247,82 @@ async function run() {
                     status: 'fail',
                     msg: 'Something went wrong'
                 });
-
             }
-        })
+        });
+
+
+        // mongodb query operator
+
+
+        app.put("/update-users-by-age", async (req, res) => {
+            try {
+                const { age, role, status } = req.body;
+
+                // Input validation
+                if (age === undefined || role === undefined) {
+                    return res.status(400).json({
+                        status: 'fail',
+                        message: 'Both age and role are required in request body'
+                    });
+                }
+
+                if (typeof age !== 'number' || age < 0) {
+                    return res.status(400).json({
+                        status: 'fail',
+                        message: 'Age must be a positive number'
+                    });
+                }
+
+                const filter = {
+                    $or: [
+                        {
+                            age: { $gte: age }
+                        },
+                        {
+                            status : { $eq : status }
+                        }
+                    ]
+                };
+
+                const update = {
+                    $set: {
+                        role: role,
+                        updatedAt: new Date() // Add timestamp
+                    }
+                };
+
+                const options = {
+                    upsert: false // Typically false for updates to prevent accidental document creation
+                };
+
+                const result = await userCollection.updateMany(filter, update, options);
+
+                if (result.matchedCount === 0) {
+                    return res.status(404).json({
+                        status: 'fail',
+                        message: 'No users found matching the criteria'
+                    });
+                }
+
+                return res.status(200).json({
+                    status: 'success',
+                    message: `${result.modifiedCount} users updated successfully`,
+                    data: {
+                        ageThreshold: age,
+                        newRole: role,
+                        matchedCount: result.matchedCount,
+                        modifiedCount: result.modifiedCount
+                    }
+                });
+
+            } catch (error) {
+                console.error('Bulk update error:', error);
+                return res.status(500).json({
+                    status: 'error',
+                    message: 'Internal server error'
+                });
+            }
+        });
 
 
 
