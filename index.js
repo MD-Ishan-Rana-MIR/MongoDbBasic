@@ -332,18 +332,25 @@ async function run() {
             try {
                 let { status, role } = req.query;
 
-                // Decode and lowercase for case-insensitive matching
-                status = status ? decodeURI(status).toLowerCase() : null;
-                role = role ? decodeURI(role).toLowerCase() : null;
+                // // Decode and lowercase for case-insensitive matching
+                // role = role ? decodeURI(role).toLowerCase() : null;
+                // status = status ? decodeURI(status).toLowerCase() : null;
 
-                let resp = await userCollection.find().toArray();
+                // let resp = await userCollection.find().toArray();
 
-                if (status || role) {
-                    resp = resp.filter(data =>
-                        (!status || data.status?.toLowerCase().includes(status)) &&
-                        (!role || data.role?.toLowerCase().includes(role))
-                    );
-                }
+                // if (role || status) {
+                //     resp = resp.filter(data =>
+                //         (!role || data.role?.toLowerCase().includes(role)) ||
+                //         (!status || data.status?.toLowerCase().includes(status))
+
+                //     );
+                // }
+
+                let filter = {}
+                if(status) filter.status = status;
+                if(role) filter.role = role;
+
+                const resp = await userCollection.find(filter).toArray()
 
                 return res.status(200).json({
                     status: 'success',
@@ -360,6 +367,38 @@ async function run() {
             }
         });
 
+        // search by keyword 
+
+        app.get("/search/:keyword", async (req, res) => {
+            try {
+                let searchRegex = {
+                    "$regex": req.params.keyword, "$options": "i"
+                };
+                const searchValue = {
+                    $or: [
+                        {
+                            name: searchRegex
+                        },
+                        {
+                            role: searchRegex
+                        }
+                    ]
+                };
+
+                const data = await userCollection.find(searchValue).toArray()
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: data
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        })
 
 
 
