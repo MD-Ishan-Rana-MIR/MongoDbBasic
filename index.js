@@ -279,7 +279,7 @@ async function run() {
                             age: { $gte: age }
                         },
                         {
-                            status : { $eq : status }
+                            status: { $eq: status }
                         }
                     ]
                 };
@@ -323,6 +323,44 @@ async function run() {
                 });
             }
         });
+
+
+        // regex 
+
+
+        app.get("/search-user", async (req, res) => {
+            try {
+                let { status, role } = req.query;
+
+                // Decode and lowercase for case-insensitive matching
+                status = status ? decodeURI(status).toLowerCase() : null;
+                role = role ? decodeURI(role).toLowerCase() : null;
+
+                let resp = await userCollection.find().toArray();
+
+                if (status || role) {
+                    resp = resp.filter(data =>
+                        (!status || data.status?.toLowerCase().includes(status)) &&
+                        (!role || data.role?.toLowerCase().includes(role))
+                    );
+                }
+
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: resp
+                });
+
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+
 
 
 
