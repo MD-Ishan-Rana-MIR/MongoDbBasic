@@ -279,7 +279,7 @@ async function run() {
                             age: { $gte: age }
                         },
                         {
-                            status : { $eq : status }
+                            status: { $eq: status }
                         }
                     ]
                 };
@@ -324,6 +324,132 @@ async function run() {
             }
         });
 
+
+        // regex 
+
+
+        app.get("/search-user", async (req, res) => {
+            try {
+                let { status, role } = req.query;
+
+                // // Decode and lowercase for case-insensitive matching
+                // role = role ? decodeURI(role).toLowerCase() : null;
+                // status = status ? decodeURI(status).toLowerCase() : null;
+
+                // let resp = await userCollection.find().toArray();
+
+                // if (role || status) {
+                //     resp = resp.filter(data =>
+                //         (!role || data.role?.toLowerCase().includes(role)) ||
+                //         (!status || data.status?.toLowerCase().includes(status))
+
+                //     );
+                // }
+
+                let filter = {}
+                if (status) filter.status = status;
+                if (role) filter.role = role;
+
+                const resp = await userCollection.find(filter).toArray()
+
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: resp
+                });
+
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+        // search by keyword 
+
+        app.get("/search/:keyword", async (req, res) => {
+            try {
+                let searchRegex = {
+                    "$regex": req.params.keyword, "$options": "i"
+                };
+                const searchValue = {
+                    $or: [
+                        {
+                            name: searchRegex
+                        },
+                        {
+                            role: searchRegex
+                        }
+                    ]
+                };
+
+                const data = await userCollection.find(searchValue).toArray()
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: data
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+
+        // array all method 
+
+
+        // pagenation 
+
+
+        app.get("/user/pagination/:page", async (req, res) => {
+            try {
+                const page = parseInt(req.params.page);
+                const limit = 5;
+                const skip = (page - 1) * limit
+                const data = await userCollection.find().sort({ age: -1 }).skip(skip).limit(limit).toArray();
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: data
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+        // dynamic pagination 
+
+        app.get("/dynamic-pagination", async (req, res) => {
+            try {
+                let page = parseInt(req.query.page) || 1;
+                let limit = parseInt(req.query.limit) || 5;
+                const skip = (page-1) * limit;
+                const data = await userCollection.find().skip(skip).limit(limit).toArray();
+                const totalUser = await userCollection.countDocuments();
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    totalUser : totalUser,
+                    data: data
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        })
 
 
 
