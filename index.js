@@ -7,7 +7,38 @@ app.use(express.json());
 
 // database connect 
 
+const studentSchemaValidation = {
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            title: "Student Object Validation",
+            required: ["address", "major", "name", "year", "email"],
+            properties: {
+                name: {
+                    bsonType: "string",
+                    description: "'name' must be a string and is required"
+                },
+                year: {
+                    bsonType: "int",
+                    minimum: 2017,
+                    maximum: 3017,
+                    description: "'year' must be an integer in [ 2017, 3017 ] and is required"
+                },
+                gpa: {
+                    bsonType: ["double"],
+                    description: "'gpa' must be a double if the field exists"
+                },
+                email: {
+                    bsonType: "starting",
+                    patern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+                    description: "email must be string and is required"
+                }
+            }
+        }
+    },
+    validateAction : "error"
 
+}
 
 
 const { MongoClient, ServerApiVersion, CURSOR_FLAGS, ObjectId } = require('mongodb');
@@ -28,7 +59,13 @@ async function run() {
         await client.connect();
 
         const db = client.db('user-management');
+        await db.createCollection("students",studentSchemaValidation)
         const userCollection = db.collection('user');
+        await db.createCollection("student",)
+        const studentCollection = db.collection("students");
+
+
+
 
         // post user data 
 
@@ -433,13 +470,61 @@ async function run() {
             try {
                 let page = parseInt(req.query.page) || 1;
                 let limit = parseInt(req.query.limit) || 5;
-                const skip = (page-1) * limit;
+                const skip = (page - 1) * limit;
                 const data = await userCollection.find().skip(skip).limit(limit).toArray();
                 const totalUser = await userCollection.countDocuments();
                 return res.status(200).json({
                     status: 'success',
                     msg: 'Data fetched successfully',
-                    totalUser : totalUser,
+                    totalUser: totalUser,
+                    data: data
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+        // indexing 
+
+        app.get("/indexing", async (req, res) => {
+            try {
+                const email = req.query.email;
+                userCollection.createIndex({ name: 1, email: 1 });
+                const userData = await userCollection.find({ email: email }).toArray();
+                userCollection.dropIndex("name_1_email_1");
+                userCollection.createIndex({ description: "text" });
+                userCollection.createIndex({ name: 1 }, { sparse: true })
+
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
+                    data: userData
+                });
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({
+                    status: 'fail',
+                    msg: 'Something went wrong'
+                });
+            }
+        });
+
+
+        app.post("/insert-student", async (req, res) => {
+            try {
+                let reqBody = req.body;
+                const studentData = {
+                    ...reqBody,
+                    createdAt: Date.now()
+                };
+                const data = await studentCollection.insertOne(studentData)
+                return res.status(200).json({
+                    status: 'success',
+                    msg: 'Data fetched successfully',
                     data: data
                 });
             } catch (error) {
