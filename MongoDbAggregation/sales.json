@@ -1,0 +1,334 @@
+[
+    {
+        "year": 2023,
+        "region": "North",
+        "amount": 1600,
+        "customer": "Alice",
+        "transactions": [
+            {
+                "item": "Laptop",
+                "amount": 1500
+            },
+            {
+                "item": "Mouse",
+                "amount": 100
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "South",
+        "amount": 1200,
+        "customer": "Bob",
+        "transactions": [
+            {
+                "item": "Monitor",
+                "amount": 800
+            },
+            {
+                "item": "Keyboard",
+                "amount": 200
+            },
+            {
+                "item": "Mousepad",
+                "amount": 200
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "East",
+        "amount": 950,
+        "customer": "Charlie",
+        "transactions": [
+            {
+                "item": "Tablet",
+                "amount": 900
+            },
+            {
+                "item": "Stylus",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "West",
+        "amount": 2200,
+        "customer": "Diana",
+        "transactions": [
+            {
+                "item": "Gaming PC",
+                "amount": 2000
+            },
+            {
+                "item": "Headphones",
+                "amount": 200
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "North",
+        "amount": 750,
+        "customer": "Eve",
+        "transactions": [
+            {
+                "item": "Printer",
+                "amount": 700
+            },
+            {
+                "item": "Ink",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "South",
+        "amount": 1800,
+        "customer": "Frank",
+        "transactions": [
+            {
+                "item": "Laptop",
+                "amount": 1500
+            },
+            {
+                "item": "Docking Station",
+                "amount": 300
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "East",
+        "amount": 350,
+        "customer": "Grace",
+        "transactions": [
+            {
+                "item": "Webcam",
+                "amount": 100
+            },
+            {
+                "item": "Microphone",
+                "amount": 150
+            },
+            {
+                "item": "Lights",
+                "amount": 100
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "West",
+        "amount": 4200,
+        "customer": "Henry",
+        "transactions": [
+            {
+                "item": "Workstation",
+                "amount": 4000
+            },
+            {
+                "item": "Ergonomic Chair",
+                "amount": 200
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "North",
+        "amount": 120,
+        "customer": "Ivy",
+        "transactions": [
+            {
+                "item": "USB Hub",
+                "amount": 50
+            },
+            {
+                "item": "Cables",
+                "amount": 70
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "South",
+        "amount": 3100,
+        "customer": "Jack",
+        "transactions": [
+            {
+                "item": "Server",
+                "amount": 3000
+            },
+            {
+                "item": "Rack",
+                "amount": 100
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "East",
+        "amount": 650,
+        "customer": "Karen",
+        "transactions": [
+            {
+                "item": "All-in-One PC",
+                "amount": 600
+            },
+            {
+                "item": "Wireless Mouse",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "West",
+        "amount": 1750,
+        "customer": "Liam",
+        "transactions": [
+            {
+                "item": "Ultrabook",
+                "amount": 1700
+            },
+            {
+                "item": "Sleeve",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "North",
+        "amount": 2300,
+        "customer": "Mia",
+        "transactions": [
+            {
+                "item": "Designer PC",
+                "amount": 2000
+            },
+            {
+                "item": "Graphics Tablet",
+                "amount": 300
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "South",
+        "amount": 850,
+        "customer": "Noah",
+        "transactions": [
+            {
+                "item": "Chromebook",
+                "amount": 800
+            },
+            {
+                "item": "Case",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "East",
+        "amount": 1500,
+        "customer": "Olivia",
+        "transactions": [
+            {
+                "item": "Convertible Laptop",
+                "amount": 1400
+            },
+            {
+                "item": "Pen",
+                "amount": 100
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "West",
+        "amount": 2800,
+        "customer": "Peter",
+        "transactions": [
+            {
+                "item": "Gaming Laptop",
+                "amount": 2500
+            },
+            {
+                "item": "Cooling Pad",
+                "amount": 100
+            },
+            {
+                "item": "Gaming Mouse",
+                "amount": 200
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "North",
+        "amount": 420,
+        "customer": "Quinn",
+        "transactions": [
+            {
+                "item": "External SSD",
+                "amount": 200
+            },
+            {
+                "item": "External HDD",
+                "amount": 220
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "South",
+        "amount": 1350,
+        "customer": "Rachel",
+        "transactions": [
+            {
+                "item": "Macbook Air",
+                "amount": 1300
+            },
+            {
+                "item": "Adapter",
+                "amount": 50
+            }
+        ]
+    },
+    {
+        "year": 2022,
+        "region": "East",
+        "amount": 900,
+        "customer": "Steve",
+        "transactions": [
+            {
+                "item": "Mini PC",
+                "amount": 800
+            },
+            {
+                "item": "Keyboard/Mouse Combo",
+                "amount": 100
+            }
+        ]
+    },
+    {
+        "year": 2023,
+        "region": "West",
+        "amount": 1950,
+        "customer": "Tina",
+        "transactions": [
+            {
+                "item": "2-in-1 Laptop",
+                "amount": 1800
+            },
+            {
+                "item": "Insurance",
+                "amount": 150
+            }
+        ]
+    }
+]
